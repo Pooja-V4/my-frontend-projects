@@ -1,0 +1,236 @@
+body {
+      background: #000;
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      overflow: hidden;
+    }
+
+    .game-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: url('img/bg2.jpg') no-repeat center center/cover;
+      overflow: hidden;
+    }
+
+    .player {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      background: url('img/player.jpeg') center/contain no-repeat;
+      border-radius: 8px;
+      transform: translateX(-50%);
+      box-shadow: 0 0 15px #00f7ff;
+      z-index: 20;
+    }
+
+    .bullet {
+      position: absolute;
+      width: 8px;
+      height: 25px;
+      background: linear-gradient(to bottom, #00f7ff 0%, #0066ff 100%);
+      border-radius: 4px 4px 8px 8px;
+      box-shadow: 0 0 15px #00f7ff, inset 0 -5px 10px rgba(0,255,255,0.5);
+      z-index: 15;
+      animation: bulletGlow 0.5s infinite alternate;
+    }
+
+    @keyframes bulletGlow {
+      from { box-shadow: 0 0 10px #00f7ff, inset 0 -5px 10px rgba(0,255,255,0.5); }
+      to { box-shadow: 0 0 20px #00f7ff, inset 0 -5px 15px rgba(0,255,255,0.8); }
+    }
+
+    .bullet-trail {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(0, 247, 255, 0.6);
+      border-radius: 50%;
+      animation: trailFade 0.5s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes trailFade {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    .muzzle-flash {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #ff6600 0%, transparent 70%);
+      animation: flash 0.05s linear;
+      pointer-events: none;
+    }
+
+    @keyframes flash {
+      from { opacity: 1; transform: scale(0.5); }
+      to { opacity: 0; transform: scale(1.5); }
+    }
+
+    .enemy {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: url('img/ufo.jpeg') center/contain no-repeat;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #ff0037;
+      z-index: 10;
+    }
+
+    .explosion {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 0, 55, 0.5);
+      border-radius: 50%;
+      animation: explode 0.3s forwards;
+      z-index: 25;
+    }
+
+    @keyframes explode {
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    .score {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #00f7ff;
+      font-size: 28px;
+      text-shadow: 0 0 15px #00f7ff;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #00f7ff;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+      backdrop-filter: blur(5px);
+      transform: skewX(-5deg);
+    }
+
+    .health-bar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 300px;
+      height: 35px;
+      background: rgba(0, 0, 0, 0.9);
+      border: 3px solid #ff0037;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(255, 0, 55, 0.5);
+      backdrop-filter: blur(5px);
+      transform: skewX(5deg);
+    }
+
+    .health-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff0037 0%, #ff5500 50%, #ff0037 100%);
+      transition: width 0.5s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .health-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+      animation: healthGlow 2s infinite;
+    }
+
+    @keyframes healthGlow {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes healthPulse {
+      0% { transform: scale(1); border-color: #ff0037; }
+      50% { transform: scale(1.1); border-color: #ff5500; box-shadow: 0 0 40px rgba(255, 0, 55, 0.8); }
+      100% { transform: scale(1); border-color: #ff0037; }
+    }
+
+    .health-bar.damage {
+      animation: healthPulse 0.5s ease;
+    }
+
+    .game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #ff0037;
+      text-shadow: 0 0 20px #ff0037;
+      display: none;
+      z-index: 100;
+    }
+
+    .game-over h1 {
+      font-size: 4em;
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    .power-up {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      background: url('img/power.webp') center/contain no-repeat;
+      border-radius: 4px;
+      animation: float 2s ease-in-out infinite;
+      z-index: 15;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .play-again-btn {
+      background: none;
+      border: 2px solid #00f7ff;
+      color: #00f7ff;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .play-again-btn:hover {
+      background: #00f7ff22;
+      box-shadow: 0 0 20px #00f7ff;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+
+    @keyframes flashDamage {
+      0% { opacity: 0.7; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      25% { transform: translateX(-50%) translateX(-5px); }
+      50% { transform: translateX(-50%) translateX(5px); }
+      75% { transform: translateX(-50%) translateX(-5px); }
+    }
