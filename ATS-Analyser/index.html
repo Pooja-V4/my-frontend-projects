@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced ATS Resume Checker | Pooja V</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="fas fa-robot"></i>Advanced ATS analyzer
+      </a>
+      <div class="navbar-text">
+        <span class="badge text-dark" style="background: linear-gradient(15deg, #7b2a41, #f65ca4);">AI-Powered</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container app-container">
+    <!-- Features Section -->
+    <div class="row mb-5">
+      <div class="col-md-12 text-center mb-4">
+        <h1 class="display-5 fw-bold typewriter">Advanced ATS Resume Analyzer</h1>
+        <p class="lead" style="color: var(--text-muted);">Multi-phrase extraction • Synonym matching • Intelligent scoring</p>
+      </div>
+      
+      <div class="col-md-3 mb-4">
+        <div class="feature-card card slide-in-left neon-border">
+          <div class="feature-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h6>Multi-Word Phrases</h6>
+          <p class="small" style="color: var(--text-muted);">Extracts "Machine Learning", "Project Management"</p>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-4">
+        <div class="feature-card card slide-in-left neon-border" style="animation-delay: 0.1s">
+          <div class="feature-icon">
+            <i class="fas fa-link"></i>
+          </div>
+          <h6>Synonym Recognition</h6>
+          <p class="small" style="color: var(--text-muted);">Matches "JS" with "JavaScript"</p>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-4">
+        <div class="feature-card card slide-in-right neon-border" style="animation-delay: 0.2s">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h6>Smart Scoring</h6>
+          <p class="small" style="color: var(--text-muted);">Weighted matching algorithm</p>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="feature-card card slide-in-right neon-border" style="animation-delay: 0.3s">
+          <div class="feature-icon">
+            <i class="fas fa-certificate"></i>
+          </div>
+          <h6>Skills Database</h6>
+          <p class="small" style="color: var(--text-muted);">1000+ technical skills recognized</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Resume Input -->
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100 zoom-in neon-border">
+          <div class="card-header">
+            <div>
+              <i class="fas fa-file-upload me-2"></i>Upload or Paste Resume
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="file-upload-area" id="fileUploadArea">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <h5>Drag & Drop Your Resume</h5>
+              <p>or click to browse files</p>
+              <small class="text-muted">Supported format: PDF only</small>
+            </div>
+            <input type="file" id="resumeFile" accept=".pdf" class="d-none" />
+            <textarea id="resumeText" class="form-control" rows="10" placeholder="Paste your resume text here..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Description Input -->
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100 zoom-in neon-border" style="animation-delay: 0.2s">
+          <div class="card-header">
+            <div>
+              <i class="fas fa-briefcase me-2"></i>Paste Job Description
+            </div>
+            <button class="btn btn-sm" id="extractKeywordsBtn">
+              <i class="fas fa-magic me-1"></i>Extract Keywords
+            </button>
+          </div>
+          <div class="card-body">
+            <textarea id="jobText" class="form-control" rows="10" placeholder="Paste the job description here..."></textarea>
+            
+            <!-- Extracted Keywords Display -->
+            <div id="extractedKeywords" class="extracted-keywords d-none">
+              <h6 class="mb-3"><i class="fas fa-key me-2"></i>Extracted Keywords</h6>
+              <div id="keywordsOutput"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analyze Button -->
+    <div class="text-center mt-5">
+      <button id="analyzeBtn" class="btn btn-primary btn-lg px-5 pulse glow">
+        <i class="fas fa-robot me-2"></i>Analyze with AI
+      </button>
+    </div>
+
+    <!-- Info Alert -->
+    <div class="info-alert mt-3 rotate-in">
+      <i class="fas fa-info-circle me-2 text-primary"></i>
+      <strong>Advanced Features:</strong> This analyzer uses multi-word phrase extraction, synonym matching (e.g., "JS"="JavaScript"), and intelligent weighted scoring for accurate ATS simulation.
+    </div>
+
+    <!-- Result Section -->
+    <div id="resultSection" class="mt-5">
+      <div class="card shadow neon-border">
+        <div class="card-header">
+          <i class="fas fa-chart-pie me-2"></i>Advanced Analysis Results
+        </div>
+        <div class="card-body">
+          <div id="resultSummary" class="text-center mb-4">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="stats-card" style="background: var(--gradient-primary);">
+                  <h4 id="matchedCount">0</h4>
+                  <p>Matched Keywords</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="score-display">
+                  <span id="scorePercent">0%</span>
+                </div>
+                <p class="text-muted">Weighted ATS Score</p>
+              </div>
+              <div class="col-md-4">
+                <div class="stats-card" style="background: var(--gradient-secondary);">
+                  <h4 id="missingCount">0</h4>
+                  <p>Missing Keywords</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="progress my-4 shimmer">
+            <div id="scoreBar" class="progress-bar progress-bar-striped" style="width: 0%;"></div>
+          </div>
+
+          <!-- Match Type Legend -->
+          <div class="match-legend">
+            <div class="legend-item">
+              <div class="legend-badge badge-exact"></div>
+              <small>Exact Match</small>
+            </div>
+            <div class="legend-item">
+              <div class="legend-badge badge-synonym"></div>
+              <small>Synonym/Abbreviation</small>
+            </div>
+            <div class="legend-item">
+              <div class="legend-badge badge-partial"></div>
+              <small>Partial Match</small>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 keyword-section">
+              <h5 class="keyword-title text-success">
+                <i class="fas fa-check-circle"></i>Matched Keywords:
+              </h5>
+              <div id="matchedWords" class="keyword-container"></div>
+            </div>
+            
+            <div class="col-md-6 keyword-section">
+              <h5 class="keyword-title text-danger">
+                <i class="fas fa-times-circle"></i>Missing Keywords:
+              </h5>
+              <div id="missingWords" class="keyword-container"></div>
+            </div>
+          </div>
+          
+          <div class="mt-4 p-3 rounded-3" style="background: var(--dark); border: 1px solid #334155;">
+            <h5><i class="fas fa-lightbulb me-2"></i>AI Recommendations</h5>
+            <p id="recommendations" class="mb-0"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Advanced ATS Analyzer | Created by Pooja 🍁</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="assets/script.js"></script>
+</body>
+</html>
